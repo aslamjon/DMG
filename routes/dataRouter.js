@@ -7,7 +7,7 @@ const {
     updateProduct,
     deleteProduct,
     getAllImages
-} = require('../controller/dataControler')
+} = require('../controllers/dataController')
 
 const router = Router()
 
