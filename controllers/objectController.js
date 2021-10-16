@@ -1,6 +1,4 @@
 const path = require("path");
-const fs = require('fs');
-const uuid = require('uuid')
 const { ObjectModel } = require('../models//objectModels');
 const { rename, unlink } = require("../utiles");
 
@@ -49,7 +47,7 @@ async function saveImg(req, res) {
 
 async function createObject(req, res) {
 	const { title, description, apartments, doneApartments, feld, status } = req.body;
-	
+
 	if (!req.file || !title || !description || !apartments || !doneApartments || !feld) res.status(400).send({ message: "Bad request" })
 	else {
 		const objectExists = await ObjectModel.findOne({ title });
@@ -99,8 +97,13 @@ async function deleteObjectById(req, res) {
 		const object = await ObjectModel.findOne({ _id: id})
 		if (!object) res.status(404).send({ message: "Object not found"})
 		else {
-			const delObject = await ObjectModel.deleteOne({ _id:id });
-			res.send({ message: "Product has been deleted" })
+			const delObject = await ObjectModel.deleteOne({ _id:id }); // return deletedCount: 1
+			const imagesFolderPath = path.join(__dirname, `./../data/images`);
+			const img = object.img.replace('/api/data/','');
+			try {
+				await unlink(`${imagesFolderPath}/${img}`)
+			} catch (error) { console.log(error) }
+			res.send({ message: "Object has been deleted" })
 		}
 	} catch (error) {
 		console.log(error)

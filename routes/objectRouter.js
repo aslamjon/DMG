@@ -15,9 +15,9 @@ const nameOfFileFromFrontend = upload.single("file");
 
 router.get('/', getObjects)
 router.get('/:id', getObjectById)
-router.post('/create', nameOfFileFromFrontend, createObject)
-router.post('/update/:id', updateObjectById)
-router.post('/delete/:id', deleteObjectById)
+router.post('/', nameOfFileFromFrontend, createObject)
+router.patch('/:id', updateObjectById)
+router.delete('/:id', deleteObjectById)
 
 module.exports = {
   objectRouter: router
