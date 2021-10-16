@@ -2,7 +2,7 @@ const { Router } = require("express");
 const path = require("path");
 const multer = require("multer");
 
-const { createObject, getObjects, getObjectById, deleteObjectById } = require("../controllers/objectController")
+const { createObject, getObjects, getObjectById, updateObjectById, deleteObjectById } = require("../controllers/objectController")
 
 const router = Router();
 
@@ -10,13 +10,14 @@ const router = Router();
 const upload = multer({
     dest: path.join(__dirname, `./../data/cache`)
 });
+/* name attribute of <file> element in your form */
 const nameOfFileFromFrontend = upload.single("file");
 
 router.get('/', getObjects)
 router.get('/:id', getObjectById)
-/* name attribute of <file> element in your form */
 router.post('/create', nameOfFileFromFrontend, createObject)
-router.post('/delete/:id')
+router.post('/update/:id', updateObjectById)
+router.post('/delete/:id', deleteObjectById)
 
 module.exports = {
   objectRouter: router

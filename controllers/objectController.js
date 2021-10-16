@@ -49,7 +49,7 @@ async function saveImg(req, res) {
 
 async function createObject(req, res) {
 	const { title, description, apartments, doneApartments, feld, status } = req.body;
-	console.log(`${title} \n ${description}\n ${apartments}\n ${doneApartments}\n ${feld}\n ${status}\n ${req.file}`)
+	
 	if (!req.file || !title || !description || !apartments || !doneApartments || !feld) res.status(400).send({ message: "Bad request" })
 	else {
 		const objectExists = await ObjectModel.findOne({ title });
@@ -106,9 +106,38 @@ async function deleteObjectById(req, res) {
 		console.log(error)
 	}
 }
+
+async function updateObjectById(req, res) {
+	const { id } = req.params
+    const { title, description, apartments, doneApartments, feld, status } = req.body;
+    try {
+        const object = await ObjectModel.findOne({ id })
+        if (!object) {
+            res.status(404).send({
+                message: "Object not found"
+            })
+        } else {
+			const update = await ObjectModel.findOneAndUpdate({ _id:id }, {
+				title: title || object.title, 
+				description: description || object.description, 
+				apartments: apartments || object.apartments, 
+				doneApartments: doneApartments || object.doneApartments, 
+				feld: feld || object.feld, 
+				status: status || object.status
+			})
+
+            res.send({
+                message: "Object has been updated successfuly"
+            })
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
 module.exports = {
 	createObject,
 	getObjects,
 	getObjectById,
+	updateObjectById,
 	deleteObjectById
 }
