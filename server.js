@@ -12,6 +12,7 @@ const { dataRouter } = require('./routes/dataRouter');
 const {authRouter} = require('./routes/authRouter');
 const { userRouter } = require("./routes/userRouter");
 const { objectRouter } = require(("./routes/objectRouter"));
+const { pathRouter } = require(("./routes/pathRouter"));
 
 // function crossss (req, res, next) {
 //     res.header("Access-Control-Allow-Origin", "*");
@@ -33,6 +34,7 @@ app.use('/auth', authRouter)
 // create user | /api/user/create
 app.use('/api/user', userRouter);
 app.use('/api/object', checkUser, checkPermission, objectRouter)
+app.use('/api/path', checkUser, checkPermission, pathRouter)
 
 // put the HTML file containing your form in a directory named "public" (relative to where this script is located)
 app.use('/', express.static("./public"));
