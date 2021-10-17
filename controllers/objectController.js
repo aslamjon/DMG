@@ -57,7 +57,8 @@ async function createObject(req, res) {
 		else {
 			const newImg = await saveImg(req, res);
 			const newObject = new ObjectModel({
-				img: `/api/data/${newImg}`, title, description, apartments, doneApartments, feld, status
+				img: `/api/data/${newImg}`, title, description, 
+				apartments, doneApartments, feld, status, assignedTo: req.user.userId
 			})
 			try {
 				await newObject.save()
@@ -73,7 +74,7 @@ async function createObject(req, res) {
 
 async function getObjects(req, res) {
 	try {
-		const objects = await ObjectModel.find()
+		const objects = await ObjectModel.find().populate("assignedTo","username") // populate bir birga bog'langan modellarni olib beradi. bu func ishlashi uchun ref: "User" bo'lishi kerak
 		res.send(objects)
 	} catch (error) {
 		console.log(error);
@@ -114,7 +115,7 @@ async function updateObjectById(req, res) {
 	const { id } = req.params
     const { title, description, apartments, doneApartments, feld, status } = req.body;
     try {
-        const object = await ObjectModel.findOne({ id })
+        const object = await ObjectModel.findOne({ _id:id })
         if (!object) {
             res.status(404).send({
                 message: "Object not found"

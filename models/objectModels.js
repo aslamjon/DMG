@@ -1,5 +1,64 @@
 const {Schema, model, Types} = require('mongoose');
 
+const floorSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String
+  },
+  viewbox: {
+    type: String,
+    required: true,
+  },
+  img: {
+    type: String,
+    required: true,
+  },
+  logo: {
+    type: String,
+    required: true,
+  },
+  path: {
+    type: String,
+    required: true,
+  },
+  apartments: {
+    type: Number,
+    required: true
+  }
+})
+
+const dwellingSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String
+  },
+  viewbox: {
+    type: String,
+    required: true,
+  },
+  img: {
+    type: String,
+    required: true,
+  },
+  logo: {
+    type: String,
+    required: true,
+  },
+  path: {
+    type: String,
+    required: true,
+  },
+  floors: [floorSchema]
+})
+
+
+
 const schema = new Schema({
   img: {
     type: String,
@@ -29,6 +88,9 @@ const schema = new Schema({
   status: {
     type: String,
   },
+  // phases: {
+  //   type: Types.ObjectId,
+  // },
   assignedTo: {
     type: Types.ObjectId,
     ref: "User"

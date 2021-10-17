@@ -13,7 +13,8 @@ const {authRouter} = require('./routes/authRouter');
 const { userRouter } = require("./routes/userRouter");
 const { objectRouter } = require(("./routes/objectRouter"));
 const { pathRouter } = require(("./routes/pathRouter"));
-
+const { phaseRouter } = require("./routes/phaseRouter")
+const { dwellingRouter } = require("./routes/dwellingRouter")
 // function crossss (req, res, next) {
 //     res.header("Access-Control-Allow-Origin", "*");
 //     // res.header("Access-Control-Allow-Methods", ["POST", "GET"] || "*");
@@ -35,11 +36,22 @@ app.use('/auth', authRouter)
 app.use('/api/user', userRouter);
 app.use('/api/object', checkUser, checkPermission, objectRouter)
 app.use('/api/path', checkUser, checkPermission, pathRouter)
+app.use('/api/phases', checkUser, phaseRouter);
+app.use('/api/dwelling', checkUser, dwellingRouter);
 
 // put the HTML file containing your form in a directory named "public" (relative to where this script is located)
 app.use('/', express.static("./public"));
 app.get("/", express.static(path.join(__dirname, "./public")));
 // or using middilware app.use(express.static('public'));
+
+// Error handle
+app.use(function(err, req, res, next) {
+    // console.log("[Global error middleware]", err.message);
+    res.status(500).send({
+        message: err.message
+    })
+    next();
+})
 
 
 const PORT = process.env.APP_PORT || 3000;
