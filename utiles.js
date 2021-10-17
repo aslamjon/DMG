@@ -44,6 +44,28 @@ async function saveImg(req, res, file) {
     }
 }
 
+async function saveImgs(req, res, fieldnames=['file']) {
+    // console.log(req.files)
+    try {
+        if (req.files.length > fieldnames.length) res.status(400).send({ message: "Bad request" });
+        else {
+            let imgs = {}
+            // check fieldname
+            for (let i = 0; fieldnames.length > i; i++) {
+                if (!fieldnames.includes(req.files[i].fieldname)) res.status(400).send({ message: "Bad request" });
+            }
+
+            for (let i = 0; fieldnames.length > i; i++) {
+                imgs[req.files[i].fieldname] = await saveImg(req, res, req.files[i]);
+            }
+            return imgs;
+        }
+    } catch (error) {
+        // console.log(error)
+        throw new Error("IMAGE_IS_NOT_SAVED")
+    }
+}
+
 function rename(previousName, newName) {
     // console.log("Rename", previousName, newName);
     return new Promise((resolve, reject) => {
@@ -67,5 +89,6 @@ module.exports = {
     writeData,
     rename,
     unlink,
-    saveImg
+    saveImg,
+    saveImgs
 }
