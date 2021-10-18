@@ -28,6 +28,8 @@ async function createPhase(req,res) {
             }
         }
     } catch (error) { 
+        console.log(error)
+
         throw new Error('PHASE_HAS_NOT_CREATED') 
     }
 }
