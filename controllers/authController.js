@@ -8,6 +8,7 @@ async function login(req, res) {
     const { username, password } = req.body;
     
     try {
+        if (!username && !password) res.status(400).send({ message: "Bed request" });
         const user = await UserModel.findOne({username});
         
         if (!user) {
