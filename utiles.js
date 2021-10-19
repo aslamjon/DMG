@@ -7,6 +7,13 @@ const writeData = (filename, content) => {
     })
 }
 
+const handleError = (err, res) => {
+	// console.log("ERROR", err);
+	res
+		.status(500)
+		.contentType("text/plain")
+		.send({ message: "Oops! Something went wrong!" });
+};
 // *****************- Images -**********************
 async function saveImg(req, res, file) {
     const tempPath = file.path;

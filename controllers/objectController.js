@@ -2,50 +2,8 @@ const path = require("path");
 const { Types } = require('mongoose');
 const { ObjectModel } = require('../models//objectModels');
 const { PhasesModel } = require('../models/phasesModels');
-const { rename, unlink } = require("../utiles");
+const { rename, unlink, saveImg } = require("../utiles");
 
-const handleError = (err, res) => {
-	// console.log("ERROR", err);
-	res
-		.status(500)
-		.contentType("text/plain")
-		.send({ message: "Oops! Something went wrong!" });
-};
-
-async function saveImg(req, res) {
-	const tempPath = req.file.path;
-	let originalName = req.file.originalname;
-
-	function addDateTime(name) {
-		const newDate = new Date()
-		const orginalNameArr = name.split(".")
-		const fileType = orginalNameArr.pop()
-		const getDate = newDate.toLocaleDateString().split('/').join('_');
-		const getTime = newDate.toLocaleTimeString().split(' ')[0].split(':').join('_');
-		orginalNameArr.push(`_${getDate}_${getTime}`);
-		orginalNameArr.push(`.${fileType}`);
-		return orginalNameArr.join('');
-	}
-
-	originalName = addDateTime(originalName);
-	const targetPath = path.join(__dirname, `./../data/images/${originalName}`);
-
-	// Create Img
-	if (path.extname(req.file.originalname).toLowerCase() && (".png" || ".svg" || ".jpg")) {
-		const resultRename = await rename(tempPath, targetPath)
-		if (!resultRename) handleError('', res);
-		else return originalName;
-	} else {
-		// Delete cache
-		const resUnlik = await unlink(tempPath);
-		if (!resUnlik) handleError('', res);
-		else {
-			res
-				.status(403).contentType("text/plain")
-				.send({ message: "Only .png, .svg, .jpg files are allowed!" });
-		}
-	}
-}
 
 async function createObject(req, res) {
 	const { title, description, apartments, doneApartments, feld, status } = req.body;
@@ -57,7 +15,7 @@ async function createObject(req, res) {
 			message: "Object is already exists",
 		})
 		else {
-			const newImg = await saveImg(req, res);
+			const newImg = await saveImg(req, res, req.file);
 			const newObject = new ObjectModel({
 				img: `/api/data/${newImg}`, title, description,
 				apartments, doneApartments, feld, status, assignedTo: req.user.userId
