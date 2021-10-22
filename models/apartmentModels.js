@@ -24,6 +24,10 @@ const schema = new Schema({
         type: String,
         required: true,
     },
+    status: {
+        type: Boolean,
+        default: false
+    },
     object_id: {
         type: Types.ObjectId,
         ref: "Object"

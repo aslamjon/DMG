@@ -85,26 +85,31 @@ async function deleteApartmentById(req, res) {
 
 // name,description,viewbox,path,floor_id
 async function updateApartmentById(req, res) {
-    const {name,description,viewbox,path,floor_id} = req.body;
+    const {name,description,viewbox,path, status,floor_id} = req.body;
     const { id } = req.params;
     try {
-        const object = await ApartmentModel.findOne({ _id: id })
-        if (!object) {
-            res.status(404).send({
-                message: "Apartment not found"
-            })
-        } else {
-			const update = await ApartmentModel.findOneAndUpdate({ _id:id }, {
-				name: name || object.name, 
-				description: description || object.description, 
-				viewbox: viewbox || object.viewbox, 
-				path: path || object.path,
-                floor_id: floor_id || object.floor_id
-			})
-
-            res.send({
-                message: "Apartment has been updated successfuly"
-            })
+        if (!name && !description && !viewbox && !path && !status && !floor_id) res.status(400).send({ message: "Bad request" });
+        else {
+            const object = await ApartmentModel.findOne({ _id: id })
+            if (!object) {
+                res.status(404).send({
+                    message: "Apartment not found"
+                })
+            } else {
+                const update = await ApartmentModel.findOneAndUpdate({ _id:id }, {
+                    name: name || object.name, 
+                    description: description || object.description, 
+                    viewbox: viewbox || object.viewbox, 
+                    path: path || object.path,
+                    status: (status == 'true' || status == 'false' ) ? status : object.status,
+                    floor_id: floor_id || object.floor_id
+                })
+    
+                res.send({
+                    message: "Apartment has been updated successfuly",
+                    update
+                })
+            }
         }
     } catch (error) { 
         console.log(error);

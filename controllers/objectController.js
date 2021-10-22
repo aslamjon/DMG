@@ -43,7 +43,30 @@ async function getObjects(req, res) {
 					foreignField: "object_id",
 					as: "phases"
 				}
-			}
+			},
+			{
+				$lookup:
+				{
+					from: "apartments",
+					// objectning id ni o'zgaruvchiga olamiz",
+					let: {objectId: "$_id"},
+					pipeline: [
+						{
+							$match: {
+								status: true,
+								$expr: {
+									$eq: [ "$object_id", "$$objectId" ]
+								}
+							}
+						},
+						{
+							$count: "count"
+						},
+						
+					],
+					as: "apartments"
+				}
+			},
 		])
 		// .populate("assignedTo","username") // populate bir birga bog'langan modellarni olib beradi. bu func ishlashi uchun ref: "User" bo'lishi kerak
 		res.send(objects)
