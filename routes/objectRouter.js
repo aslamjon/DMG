@@ -11,7 +11,7 @@ const upload = multer({
     dest: path.join(__dirname, `./../data/cache`)
 });
 /* name attribute of <file> element in your form */
-const nameOfFileFromFrontend = upload.single("file");
+const nameOfFileFromFrontend = upload.any();
 
 router.get('/', getObjects)
 router.get('/:id', getObjectById)
