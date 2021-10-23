@@ -73,10 +73,10 @@ const schema = new Schema({
     type: String,
     required: true
   },
-  // apartments: {
-  //   type: Number,
-  //   required: true
-  // },
+  rating: {
+    type: Number,
+    default: 0
+  },
   doneApartments: {
     type: Number,
     required: true

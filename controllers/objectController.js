@@ -61,10 +61,17 @@ async function getObjects(req, res) {
 						},
 						{
 							$count: "count"
-						},
-						
+						}
 					],
 					as: "apartments"
+				}
+			},
+			{
+				$unwind: "$apartments"
+			},
+			{
+				$addFields: {
+					apartments: '$apartments.count'
 				}
 			},
 		])
@@ -125,7 +132,7 @@ async function deleteObjectById(req, res) {
 
 async function updateObjectById(req, res) {
 	const { id } = req.params
-	const { title, description, apartments, doneApartments, feld, status } = req.body;
+	const { title, description, rating, doneApartments, feld, status } = req.body;
 	try {
 		const object = await ObjectModel.findOne({ _id: id })
 		if (!object) {
@@ -133,18 +140,21 @@ async function updateObjectById(req, res) {
 				message: "Object not found"
 			})
 		} else {
-			const update = await ObjectModel.findOneAndUpdate({ _id: id }, {
-				title: title || object.title,
-				description: description || object.description,
-				apartments: apartments || object.apartments,
-				doneApartments: doneApartments || object.doneApartments,
-				feld: feld || object.feld,
-				status: status || object.status
-			})
-
-			res.send({
-				message: "Object has been updated successfuly"
-			})
+      if (!title && !description && !rating && !doneApartments && !feld && !status) res.status(400).send({ message: "Bad request" });
+      else {
+        const update = await ObjectModel.findOneAndUpdate({ _id: id }, {
+          title: title || object.title,
+          description: description || object.description,
+          rating: rating || object.rating,
+          doneApartments: doneApartments || object.doneApartments,
+          feld: feld || object.feld,
+          status: status || object.status
+        })
+  
+        res.send({
+          message: "Object has been updated successfuly"
+        })
+      }
 		}
 	} catch (error) {
 		console.log(error);
