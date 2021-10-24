@@ -4,7 +4,7 @@ const { PhasesModel } = require('../models/phasesModels');
 const { saveImgs, unlink } = require("../utiles");
 
 // name,description,viewbox,path,phase_id = data
-// img, logo = files
+// img = files
 async function createDwelling(req, res) {
     const {name,description,viewbox,path,phase_id} = req.body;
     try {
@@ -13,13 +13,12 @@ async function createDwelling(req, res) {
             const phase = await PhasesModel.find({ _id: phase_id }, { object_id: 1, _id: 0 });
             if (!phase.length) res.status(404).send({ message: "Phase not found" });
             else {
-                const {img, logo} = await saveImgs(req, res, ['img', 'logo']);
+                const {img} = await saveImgs(req, res, ['img']);
     
                 const newDwelling = new DwellingModel({
                     name,description,viewbox,path,phase_id,
                     object_id: phase[0].object_id,
                     img: `/api/data/${img}`,
-                    logo: `/api/data/${logo}`
                 })
                 await newDwelling.save();
                 res.status(200).send({

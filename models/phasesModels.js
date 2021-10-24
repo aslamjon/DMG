@@ -16,10 +16,10 @@ const phaseSchema = new Schema({
         type: String,
         required: true,
     },
-    logo: {
-        type: String,
-        required: true,
-    },
+    // logo: {
+    //     type: String,
+    //     required: true,
+    // },
     path: {
         type: String,
         required: true,

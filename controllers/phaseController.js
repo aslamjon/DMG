@@ -14,11 +14,10 @@ async function createPhase(req,res) {
             const objectIsMatch = ObjectModel.findOne({ _id: object_id })
             if (!objectIsMatch) res.status(404).send({ message: "Object not found" })
             else {
-                const {img, logo} = await saveImgs(req, res, ['img', 'logo']);
+                const {img} = await saveImgs(req, res, ['img']);
                 
                 const newPhase = new PhasesModel({
                     img: `/api/data/${img}`,
-                    logo: `/api/data/${logo}`,
                     name,description,viewbox,path,object_id
                 })
                 await newPhase.save();

@@ -4,18 +4,6 @@ const { ObjectModel } = require('../models//objectModels');
 const { PhasesModel } = require('../models/phasesModels');
 const { unlink, saveImgs } = require("../utiles");
 
-const { ObjectId } = Types;
-
-// Validator function
-function isValidObjectId(id){
-      
-  if(ObjectId.isValid(id)){
-      if((String)(new ObjectId(id)) === id)
-          return true;        
-      return false;
-  }
-  return false;
-}
 
 async function createObject(req, res) {
   const { title, description, apartments, doneApartments, feld, status } = req.body;
@@ -89,63 +77,7 @@ async function getObjects(req, res) {
         }
       },
     ]);
-    // const apartment = await ObjectModel.aggregate([
-    //   {
-    //     $lookup:
-    //     {
-    //       from: "apartments",
-    //       // objectning id ni o'zgaruvchiga olamiz",
-    //       let: { objectId: "$_id" },
-    //       pipeline: [
-    //         {
-    //           $match: {
-    //             status: true,
-    //             $expr: {
-    //               $eq: ["$object_id", "$$objectId"]
-    //             }
-    //           }
-    //         },
-    //         {
-    //           $group: {
-    //             _id: "$$objectId",
-    //             count: { $sum: 1 },
-    //           }
-    //         },
-    //       ],
-    //       as: "apartments"
-    //     }
-    //   },
-    //   {
-    //     $unwind: "$apartments"
-    //   },
-    //   // {
-    //   //   $project: {
-    //   //     apartments: '$apartments.count',
-    //   //     count: { $cond: { if: { $gte: [ "$count", 0 ] }, then: "$count", else: 0 }}
-
-    //   //   }
-    //   //   $addFields: {
-    //   //   	apartments: '$apartments.count'
-    //   //   }
-    //   // },
-    //   {
-    //     $replaceRoot: { "newRoot": "$apartments" }
-    //   }
-    // ])
     // .populate("assignedTo","username") // populate bir birga bog'langan modellarni olib beradi. bu func ishlashi uchun ref: "User" bo'lishi kerak
-    // const newObj = objects.map((obj, index) => {
-
-    //   apartment.forEach(val => {
-    //     if (Types.ObjectId(obj._id) == Types.ObjectId(val._id)) obj.apartments = val.count;
-
-        // console.log(Types.ObjectId(obj._id) == Types.ObjectId(val._id))
-        // console.log(obj._id,val._id)
-      // });
-      // if (temp) obj.apartments = temp;
-      // console.log(temp)
-    //   return obj;
-    // });
-
     res.send(objects)
   } catch (error) {
     console.log(error);

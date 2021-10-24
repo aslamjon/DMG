@@ -91,6 +91,7 @@ const schema = new Schema({
   },
   status: {
     type: String,
+    default: "null"
   },
   // phases: {
   //   type: Types.ObjectId,

@@ -4,7 +4,7 @@ const { FloorModel } = require('../models/floorModels');
 const { saveImgs, unlink } = require("../utiles");
 
 // name,description,viewbox,path,dwelling_id = data
-// img, logo = files
+// img = files
 async function createFloor(req, res) {
     const {name,description,viewbox,path,dwelling_id} = req.body;
     try {
@@ -13,7 +13,7 @@ async function createFloor(req, res) {
             const dwelling = await DwellingModel.find({ _id: dwelling_id }, { object_id: 1, phase_id: 1, _id: 0 });
             if (!dwelling.length) res.status(404).send({ message: "Dwelling not found" });
             else {
-                const {img, logo} = await saveImgs(req, res, ['img', 'logo']);
+                const {img} = await saveImgs(req, res, ['img']);
     
                 const newFloor = new FloorModel({
                     name,description,viewbox,path,
@@ -21,7 +21,6 @@ async function createFloor(req, res) {
                     phase_id: dwelling[0].phase_id,
                     object_id: dwelling[0].object_id,
                     img: `/api/data/${img}`,
-                    logo: `/api/data/${logo}`
                 })
                 await newFloor.save();
                 res.status(200).send({
