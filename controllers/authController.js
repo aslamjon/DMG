@@ -4,40 +4,40 @@ const bcrypt = require('bcryptjs')
 const { UserModel } = require("../models/user.model");
 
 async function login(req, res) {
-    const secret = process.env.SALT;
-    const { username, password } = req.body;
-    
-    try {
-        if (!username && !password) res.status(400).send({ message: "Bed request" });
-        const user = await UserModel.findOne({username});
-        
-        if (!user) {
-            res.status(400).send({ message: "Login is incorrect" });
-        }
-        
-        const isMatch = await bcrypt.compare(password, user.password)
-        if (!isMatch) {
-            res.status(400).send({ message: "Password is incorrect" });
-        }
+  const secret = process.env.SALT;
+  const { username, password } = req.body;
 
+  try {
+    console.log(req.body)
+    const user = await UserModel.findOne({ username });
+    if (!username || !password) res.status(400).send({ message: `Bed request: send me username and password` });
+    
+    else if (!user) res.status(400).send({ message: "Login is incorrect" });
+    
+    else {
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) res.status(400).send({ message: "Password is incorrect" });
+      else {
         const token = jwt.sign({ userId: user.id, rule: user.rule }, secret, {
-            expiresIn: "5d",
+          expiresIn: "5d",
         });
         /* 
             jwt.sign -> create token
             secret -> secret for virify
             expiresIn: "1d"  -> token live 1 day. 
-        */ 
+        */
         res.status(200).send({
-            token: token,
+          token: token,
         });
-    } catch (error) {
-        console.log(error);
+      }
     }
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 module.exports = {
-    login,
+  login,
 };
 
 // 1. Find User by username
