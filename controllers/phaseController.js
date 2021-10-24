@@ -11,7 +11,7 @@ async function createPhase(req,res) {
     try {
         if (!name || !description || !viewbox || !path || !object_id) res.status(400).send({ message: "Bad request" });
         else {
-            const objectIsMatch = ObjectModel.findOne({ _id: object_id })
+            const objectIsMatch = await ObjectModel.findOne({ _id: object_id })
             if (!objectIsMatch) res.status(404).send({ message: "Object not found" })
             else {
                 const {img} = await saveImgs(req, res, ['img']);
@@ -84,11 +84,11 @@ async function deletePhaseById(req, res) {
             try {
                 await unlink(`${imagesFolderPath}/${img}`)
                 await unlink(`${imagesFolderPath}/${logo}`)
-            } catch (error) { throw new Error("IMAGE_HAS_NOT_DELETED") }
+            } catch (error) { throw "IMAGE_HAS_NOT_DELETED" }
             res.send({ message: "Phase has been deleted" })
         }
     } catch (error) {
-        throw new Error("PHASE_HAS_NOT_BEEN_DELETED")
+        throw "PHASE_HAS_NOT_BEEN_DELETED"
     }
 }
 // name,description,viewbox,path,object_id
