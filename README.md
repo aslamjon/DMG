@@ -16,8 +16,9 @@ $ npm start
 `Create User` -> [post] `/api/user/create`<br/>
 `Get Me` -> [get] `/api/user`<br/>
 `Create Object` -> [post] `/api/object`<br/>
-Values<br/>
+Values
 * img, logo, title, description, doneApartments, feld<br/>
+
 `Get Objects` -> [get] `/api/object`<br/>
 `Get Object By Id` -> [get] `/api/object/{id}`<br/>
 `Update Object By Id` -> [patch] `/api/object/{id}`<br/>
