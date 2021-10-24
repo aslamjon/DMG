@@ -27,6 +27,17 @@ async function createUser(req, res) {
   }
 }
 
+async function getMe(req, res) {
+  try {
+    const {userId} = req.user;
+    const user = await UserModel.findById(userId);
+    res.send(user);
+  } catch (err) {
+    throw err.message;
+  }
+}
+
 module.exports = {
-  createUser
+  createUser,
+  getMe
 }

@@ -36,7 +36,7 @@ app.use('/api/data', checkUser, dataRouter);
 // login | /auth/login
 app.use('/auth', authRouter)
 // create user | /api/user/create
-app.use('/api/user', checkUser, isAdmin, userRouter);
+app.use('/api/user', checkUser, userRouter);
 app.use('/api/object', checkUser, checkPermission, objectRouter)
 app.use('/api/path', checkUser, checkPermission, pathRouter)
 app.use('/api/phases', checkUser, phaseRouter);
