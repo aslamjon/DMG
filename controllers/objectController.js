@@ -6,9 +6,9 @@ const { unlink, saveImgs } = require("../utiles");
 
 
 async function createObject(req, res) {
-  const { title, description, apartments, doneApartments, feld, status } = req.body;
+  const { title, description, doneApartments, feld, status } = req.body;
   try {
-    if (!title || !description || !apartments || !doneApartments || !feld) res.status(400).send({ message: "Bad request" })
+    if (!title || !description || !doneApartments || !feld) res.status(400).send({ message: "Bad request" })
     else {
       const objectExists = await ObjectModel.findOne({ title });
       if (objectExists) res.status(400).send({
@@ -20,7 +20,7 @@ async function createObject(req, res) {
           img: `/api/data/${img}`,
           logo: `/api/data/${logo}`,
           title, description,
-          apartments, doneApartments, feld, status, assignedTo: req.user.userId
+          doneApartments, feld, status, assignedTo: req.user.userId
         })
         await newObject.save()
         res.status(200).send({
