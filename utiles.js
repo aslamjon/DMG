@@ -16,45 +16,55 @@ const handleError = (err, res) => {
 };
 // *****************- Images -**********************
 async function saveImg(req, res, file) {
-    const tempPath = file.path;
-    let originalName = file.originalname;
-
-    function addDateTime(name) {
-        const newDate = new Date()
-        const orginalNameArr = name.split(".")
-        const fileType = orginalNameArr.pop()
-        const getDate = newDate.toLocaleDateString().split('/').join('_');
-        const getTime = newDate.toLocaleTimeString().split(' ')[0].split(':').join('_');
-        const milliseconds = newDate.getMilliseconds();
-        orginalNameArr.push(`_${getDate}_${getTime}_${milliseconds}`);
-        orginalNameArr.push(`.${fileType}`);
-        return orginalNameArr.join('');
-    }
-
-    originalName = addDateTime(originalName);
-    const targetPath = path.join(__dirname, `./data/images/${originalName}`);
-
-    // Create Img
-    if (path.extname(file.originalname).toLowerCase() && (".png" || ".svg" || ".jpg")) {
-        const resultRename = await rename(tempPath, targetPath)
-        if (!resultRename) handleError('', res);
-        else return originalName;
-    } else {
-        // Delete cache
-        const resUnlik = await unlink(tempPath);
-        if (!resUnlik) handleError('', res);
-        else {
-            res
-                .status(403).contentType("text/plain")
-                .send({ message: "Only .png, .svg, .jpg files are allowed!" });
+    try {
+        const tempPath = file.path;
+        let originalName = file.originalname;
+    
+        function addDateTime(name) {
+            const newDate = new Date()
+            const orginalNameArr = name.split(".")
+            const fileType = orginalNameArr.pop()
+            const getDate = newDate.toLocaleDateString().split('/').join('_');
+            const getTime = newDate.toLocaleTimeString().split(' ')[0].split(':').join('_');
+            const milliseconds = newDate.getMilliseconds();
+            orginalNameArr.push(`_${getDate}_${getTime}_${milliseconds}`);
+            orginalNameArr.push(`.${fileType}`);
+            return orginalNameArr.join('');
         }
+    
+        originalName = addDateTime(originalName);
+        const targetPath = path.join(__dirname, `./data/images/${originalName}`);
+    
+        // Create Img
+        if (path.extname(file.originalname).toLowerCase() && (".png" || ".svg" || ".jpg")) {
+            const resultRename = await rename(tempPath, targetPath)
+            if (!resultRename) handleError('', res);
+            else return originalName;
+        } else {
+            // Delete cache
+            const resUnlik = await unlink(tempPath);
+            if (!resUnlik) handleError('', res);
+            else {
+                res
+                    .status(403).contentType("text/plain")
+                    .send({ message: "Only .png, .svg, .jpg files are allowed!" });
+            }
+        }
+    } catch (error) {
+        throw new Error(`${error.message} from saveImg`)
     }
 }
 
 async function saveImgs(req, res, fieldnames=['file']) {
-    // console.log(req.files)
     try {
-        if (req.files.length > fieldnames.length) res.status(400).send({ message: "Bad request" });
+        if (req.files.length !== fieldnames.length) {
+            for (let i = 0; req.files.length > i; i++) {
+                // Delete cache
+                const resUnlik = await unlink(req.files[i].path);
+                if (!resUnlik) handleError('', res);
+            }
+            res.status(400).send({ message: `Bad request: please send ${fieldnames.join(', ')}` });
+        }
         else {
             let imgs = {}
             // check fieldname
@@ -69,7 +79,8 @@ async function saveImgs(req, res, fieldnames=['file']) {
         }
     } catch (error) {
         // console.log(error)
-        throw new Error("IMAGE_IS_NOT_SAVED")
+        throw new Error(`${error.message} from saveImgs`);
+        // throw new Error("IMAGE_IS_NOT_SAVED")
     }
 }
 
