@@ -7,30 +7,30 @@ const { unlink, saveImgs } = require("../utiles");
 
 async function createObject(req, res) {
   const { title, description, apartments, doneApartments, feld, status } = req.body;
-
-  if (!title || !description || !apartments || !doneApartments || !feld) res.status(400).send({ message: "Bad request" })
-  else {
-    const objectExists = await ObjectModel.findOne({ title });
-    if (objectExists) res.status(400).send({
-      message: "Object is already exists",
-    })
+  try {
+    if (!title || !description || !apartments || !doneApartments || !feld) res.status(400).send({ message: "Bad request" })
     else {
-      const { img, logo } = await saveImgs(req, res, ['img', 'logo']);
-      const newObject = new ObjectModel({
-        img: `/api/data/${img}`,
-        logo: `/api/data/${logo}`,
-        title, description,
-        apartments, doneApartments, feld, status, assignedTo: req.user.userId
+      const objectExists = await ObjectModel.findOne({ title });
+      if (objectExists) res.status(400).send({
+        message: "Object is already exists",
       })
-      try {
+      else {
+        const { img, logo } = await saveImgs(req, res, ['img', 'logo']);
+        const newObject = new ObjectModel({
+          img: `/api/data/${img}`,
+          logo: `/api/data/${logo}`,
+          title, description,
+          apartments, doneApartments, feld, status, assignedTo: req.user.userId
+        })
         await newObject.save()
         res.status(200).send({
           message: "Object has been created"
-        })
-      } catch (error) {
-        console.log(error)
+        });
       }
     }
+  } catch (error) {
+    // console.log(error.message);
+    throw "OBJECT_HAS_NOT_CREATED";
   }
 }
 
