@@ -12,14 +12,14 @@ $ npm start
 ```
 ## APIs
 
-`Login` -> [post] `/auth/login`
-`Create User` -> [post] `/api/user/create`
-`Get Me` -> [get] `/api/user`
-`Create Object` -> [post] `/api/object`
-Values
-* img, logo, title, description, doneApartments, feld
-`Get Objects` -> [get] `/api/object`
-`Get Object By Id` -> [get] `/api/object/{id}`
-`Update Object By Id` -> [patch] `/api/object/{id}`
-`Delete Object By Id` -> [delete] `/api/object/{id}`
+`Login` -> [post] `/auth/login`<br/>
+`Create User` -> [post] `/api/user/create`<br/>
+`Get Me` -> [get] `/api/user`<br/>
+`Create Object` -> [post] `/api/object`<br/>
+Values<br/>
+* img, logo, title, description, doneApartments, feld<br/>
+`Get Objects` -> [get] `/api/object`<br/>
+`Get Object By Id` -> [get] `/api/object/{id}`<br/>
+`Update Object By Id` -> [patch] `/api/object/{id}`<br/>
+`Delete Object By Id` -> [delete] `/api/object/{id}`<br/>
 
