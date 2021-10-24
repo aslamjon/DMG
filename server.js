@@ -6,7 +6,7 @@ const cors = require('cors');
 
 const { connectDb } = require("./services/db/db");
 const { checkUser } = require("./middlewares/authMiddleware")
-const { checkPermission } = require('./middlewares/checkPermission');
+const { checkPermission, isAdmin } = require('./middlewares/checkPermission');
 
 const { dataRouter } = require('./routes/dataRouter');
 const {authRouter} = require('./routes/authRouter');
@@ -36,7 +36,7 @@ app.use('/api/data', checkUser, dataRouter);
 // login | /auth/login
 app.use('/auth', authRouter)
 // create user | /api/user/create
-app.use('/api/user', userRouter);
+app.use('/api/user', checkUser, isAdmin, userRouter);
 app.use('/api/object', checkUser, checkPermission, objectRouter)
 app.use('/api/path', checkUser, checkPermission, pathRouter)
 app.use('/api/phases', checkUser, phaseRouter);
