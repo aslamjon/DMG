@@ -93,6 +93,11 @@ async function getObjectById(req, res) {
     else {
       object = await ObjectModel.aggregate([
         {
+          $match: {
+            _id: Types.ObjectId(id)
+          }
+        },
+        {
           $lookup:
           {
             from: "phases",
