@@ -64,10 +64,8 @@ async function deleteFloorById(req, res) {
             await FloorModel.deleteOne({ _id: id });
             const imagesFolderPath = path.join(__dirname, `./../data/images`);
             const img = floor.img.replace('/api/data/','');
-            const logo = floor.logo.replace('/api/data/','');
             try {
-                await unlink(`${imagesFolderPath}/${img}`)
-                await unlink(`${imagesFolderPath}/${logo}`)
+                await unlink(`${imagesFolderPath}/${img}`);
             } catch (error) { 
                 console.log(error)
             }

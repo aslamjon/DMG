@@ -67,10 +67,8 @@ async function deleteApartmentById(req, res) {
       await ApartmentModel.deleteOne({ _id: id });
       const imagesFolderPath = path.join(__dirname, `./../data/images`);
       const img = obj.img.replace('/api/data/', '');
-      const logo = obj.logo.replace('/api/data/', '');
       try {
         await unlink(`${imagesFolderPath}/${img}`)
-        await unlink(`${imagesFolderPath}/${logo}`)
       } catch (error) {
         console.log(error)
       }

@@ -9,9 +9,9 @@ const { rename, unlink, saveImgs } = require("../utiles");
 async function createPhase(req,res) {
     const {name,description,viewbox,path,object_id} = req.body;
     try {
+        const objectIsMatch = await ObjectModel.findOne({ _id: object_id })
         if (!name || !description || !viewbox || !path || !object_id) res.status(400).send({ message: "Bad request" });
         else {
-            const objectIsMatch = await ObjectModel.findOne({ _id: object_id })
             if (!objectIsMatch) res.status(404).send({ message: "Object not found" })
             else {
                 const {img} = await saveImgs(req, res, ['img']);
@@ -80,10 +80,8 @@ async function deletePhaseById(req, res) {
             await PhasesModel.deleteOne({ _id: id })
             const imagesFolderPath = path.join(__dirname, `./../data/images`);
             const img = phase.img.replace('/api/data/','');
-            const logo = phase.logo.replace('/api/data/','');
             try {
                 await unlink(`${imagesFolderPath}/${img}`)
-                await unlink(`${imagesFolderPath}/${logo}`)
             } catch (error) { throw "IMAGE_HAS_NOT_DELETED" }
             res.send({ message: "Phase has been deleted" })
         }
