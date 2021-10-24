@@ -11,10 +11,15 @@ and
 $ npm start
 ```
 ## APIs
-### -GetAllData = [get] /api/data
-### -GetElementById = [get] /api/data/{id}
-### -GetAllImagea = [get] /api/data/allImages
-### -SetDataOrImages = [post] /api/data
-### -Update = [put] /api/data/{id}
-### -Delete = [delete] /api/data/{id}
+
+`Login` -> [post] `/auth/login`
+`Create User` -> [post] `/api/user/create`
+`Get Me` -> [get] `/api/user`
+`Create Object` -> [post] `/api/object`
+Values
+* img, logo, title, description, doneApartments, feld
+`Get Objects` -> [get] `/api/object`
+`Get Object By Id` -> [get] `/api/object/{id}`
+`Update Object By Id` -> [patch] `/api/object/{id}`
+`Delete Object By Id` -> [delete] `/api/object/{id}`
 
