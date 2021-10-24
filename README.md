@@ -24,7 +24,7 @@ Values
   <summary>About Object</summary>
   <ol>
     <li>
-      <a href="#">Create Object</a> -> [post] `/api/object`
+      <a href="#">Create Object</a> -> [post] /api/object
       <p style="color: red;">Values</p>
       <ul>
         <li>img</li>
@@ -36,16 +36,16 @@ Values
       </ul>
     </li>
     <li>
-        <a href="#">Get Objects</a> -> [get] `/api/object`
+        <a href="#">Get Objects</a> -> [get] /api/object
     </li>
     <li>
-        <a href="#">Get Object By Id</a> -> [get] `/api/object/{id}`
+        <a href="#">Get Object By Id</a> -> [get] /api/object/{id}
     </li>
     <li>
-        <a href="#">Update Object By Id</a> -> [patch] `/api/object/{id}`
+        <a href="#">Update Object By Id</a> -> [patch] /api/object/{id}
     </li>
     <li>
-        <a href="#">Delete Object By Id</a> -> [delete] `/api/object/{id}`
+        <a href="#">Delete Object By Id</a> -> [delete] /api/object/{id}
     </li>
   </ol>
 </details>
