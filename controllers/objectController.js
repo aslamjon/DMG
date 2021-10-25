@@ -154,8 +154,10 @@ async function deleteObjectById(req, res) {
       const delObject = await ObjectModel.deleteOne({ _id: id }); // return deletedCount: 1
       const imagesFolderPath = path.join(__dirname, `./../data/images`);
       const img = object.img.replace('/api/data/', '');
+      const logo = object.logo.replace('/api/data/', '');
       try {
         await unlink(`${imagesFolderPath}/${img}`)
+        await unlink(`${imagesFolderPath}/${logo}`)
       } catch (error) { console.log(error) }
       res.send({ message: "Object has been deleted" })
     }
