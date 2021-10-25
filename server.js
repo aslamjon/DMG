@@ -17,6 +17,7 @@ const { phaseRouter } = require("./routes/phaseRouter")
 const { dwellingRouter } = require("./routes/dwellingRouter");
 const { floorRouter } = require('./routes/floorRouter');
 const { apartmentRouter } = require('./routes/apartmentRouter');
+const { smsRouter } = require('./routes/smsServiceRouter');
 
 // function crossss (req, res, next) {
 //     res.header("Access-Control-Allow-Origin", "*");
@@ -43,6 +44,7 @@ app.use('/api/phases', checkUser, phaseRouter);
 app.use('/api/dwelling', checkUser, dwellingRouter);
 app.use('/api/floor', checkUser, floorRouter);
 app.use('/api/apartment', checkUser, apartmentRouter);
+app.use('/api/sms', smsRouter);
 
 // put the HTML file containing your form in a directory named "public" (relative to where this script is located)
 app.use('/', express.static("./public"));

@@ -3,29 +3,5 @@
         "id": 1,
         "title": "Aslamjon",
         "age": 21
-    },
-    {
-        "id": "9776f0b3-d935-4685-8b58-2e20b7291b2d",
-        "username": "123",
-        "password": "232",
-        "subdomen": "dsdsd"
-    },
-    {
-        "id": "eeeb2658-187d-48f8-8bbe-e2469df94077",
-        "username": "1213",
-        "password": "sadasd",
-        "subdomen": "xcxvcq32"
-    },
-    {
-        "id": "9c16e047-7d34-478e-8323-b96eb7961590",
-        "username": "1213",
-        "password": "sadasd",
-        "subdomen": "xcxvcq32"
-    },
-    {
-        "id": "997ee83f-7379-44f5-bd61-003fc98ed66f",
-        "username": "fortest",
-        "password": "forface1",
-        "subdomen": "face"
     }
 ]
